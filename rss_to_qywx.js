@@ -31,8 +31,14 @@ function tagOf(url){
   return m && map[m[1]] ? `金十·${map[m[1]]}` : '金十';
 }
 
+// 净化文本（去空格、去标点，用于比较）
+function normalize(s = '') {
+  return s.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').toLowerCase();
+}
+
 (async () => {
   let total = 0;
+
   for (const rss of RSS_LIST) {
     const feed = await parser.parseURL(rss);
     const items = (feed.items || []).reverse();
@@ -41,24 +47,39 @@ function tagOf(url){
 
     for (const it of items) {
       if (!it.link || it.link === last) continue;
-      const title = it.title || '';
+
+      const title = (it.title || '').trim();
+      let text = (it.contentSnippet || '').trim();
       const time = it.pubDate || '';
-      const text = (it.contentSnippet || '').substring(0, 200);
       const tag = tagOf(rss);
-      
-      // 只留“高价值词”
+
+      // ✅ 强力去重：标题和正文重复就清空正文
+      if (normalize(text).startsWith(normalize(title))) {
+        text = '';
+      }
+
+      // ✅ 关键词过滤
       const KEYS = ['美联储','加息','CPI','非农','通胀','利率','美元','日元','黄金','油','制裁','停火','战争','特朗普','鲍威尔'];
-      const textAll = `${it.title || ''} ${it.contentSnippet || ''}`;
+      const textAll = `${title} ${text}`;
       if (!KEYS.some(k => textAll.includes(k))) continue;
 
-      const msg = `### ${title}\n【${tag}】\n${text}\n\n[查看原文](${it.link})${time ? `\n🕒 ${time}` : ''}`;
+      // 构造消息体
+      const msg = `### ${title}
+【${tag}】
+${text ? text + '\n' : ''}
+[查看原文](${it.link})${time ? `\n🕒 ${time}` : ''}`;
+
       await axios.post(WEBHOOK, { msgtype:'markdown', markdown:{ content: msg } });
 
-      newest = it.link; total++;
+      newest = it.link;
+      total++;
+
       await new Promise(r => setTimeout(r, 900));
     }
+
     if (newest) history[rss] = newest;
   }
+
   fs.writeFileSync(STORE, JSON.stringify(history, null, 2));
   console.log(`完成，发送 ${total} 条`);
 })();
