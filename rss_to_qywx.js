@@ -27,6 +27,7 @@ function tagOf(url){
   return m && map[m[1]] ? `金十·${map[m[1]]}` : '金十';
 }
 
+// 归一化用于“标题/正文”去重
 function normalize(t='') {
   return t.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g,'').toLowerCase();
 }
@@ -38,10 +39,10 @@ function normalize(t='') {
     let feed;
     try {
       console.log('Fetching:', rss);
-      feed = await parser.parseURL(rss);            // ✅ 单源容错
+      feed = await parser.parseURL(rss);   // 单源容错
     } catch (e) {
       console.error('❌ RSS失败，已跳过：', rss, e.message);
-      continue;                                    // ✅ 不因一个源中断全局
+      continue;
     }
 
     const items = (feed.items || []).reverse();
@@ -56,12 +57,16 @@ function normalize(t='') {
       const time = it.pubDate || '';
       const tag = tagOf(rss);
 
+      // —— 标题/正文去重（正文与标题相同或以标题开头 → 不显示正文）——
       if (normalize(text).startsWith(normalize(title))) text = '';
 
-      // —— 关键词过滤（按你当前逻辑：标题+正文）——
-      const KEYS = ['美联储','加息','CPI','非农','通胀','利率','美元','日元','黄金','油','制裁','停火','战争','特朗普','鲍威尔'];
-      const textAll = `${title} ${text}`;
-      if (!KEYS.some(k => textAll.includes(k))) continue;
+      // —— ✅ 仅对「重要快讯」做关键词过滤 —— 
+      if (tag === '金十·重要快讯') {
+        const KEYS = ['美联储','加息','CPI','非农','通胀','利率','美元','日元','黄金','油','制裁','停火','战争','特朗普','鲍威尔'];
+        const textAll = `${title} ${text}`;
+        if (!KEYS.some(k => textAll.includes(k))) continue;
+      }
+      // 其他分类：不做过滤，直接放行
 
       const msg = `### ${title}
 【${tag}】
@@ -73,7 +78,7 @@ ${text ? text + '\n' : ''}
         newest = it.link;
         total++;
       } catch (e) {
-        console.error('❌ 推送失败：', e.message); // 单条失败不影响其他
+        console.error('❌ 推送失败：', e.message);
       }
 
       await new Promise(r => setTimeout(r, 1000));
