@@ -2,7 +2,7 @@ name: Jin10 RSS to QY WeChat
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/1 * * * *'
   workflow_dispatch:
 
 jobs:
