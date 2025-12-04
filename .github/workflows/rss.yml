@@ -1,0 +1,27 @@
+name: Jin10 RSS to QY WeChat
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install rss-parser axios
+      - name: Run
+        env:
+          RSS_URL: ${{ secrets.RSS_URL }}
+          QYWX_WEBHOOK: ${{ secrets.QYWX_WEBHOOK }}
+        run: node rss_to_qywx.js
+      - name: Save last
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "last.json"
+          message: "update last"
+          default_author: github_actions
