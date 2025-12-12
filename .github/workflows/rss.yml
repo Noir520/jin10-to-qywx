@@ -11,40 +11,41 @@ concurrency:
 
 jobs:
   run:
-    if: github.repository_owner == 'Noir520'
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout bot state branch
+      # 1. 永远从 main checkout（一定存在）
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          ref: bot/update-last
+          ref: main
+          fetch-depth: 0
 
+      # 2. Node 环境
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
+      # 3. 安装依赖
       - name: Install dependencies
         run: npm ci
 
+      # 4. 运行脚本
       - name: Run bot
         env:
           RSS_URL: ${{ secrets.RSS_URL }}
           QYWX_WEBHOOK: ${{ secrets.QYWX_WEBHOOK }}
         run: node rss_to_qywx.js
 
+      # 5. 提交运行态状态文件
+      #    - 若 bot/update-last 不存在：自动创建
+      #    - 若存在：直接提交
       - name: Commit last.json
         uses: EndBug/add-and-commit@v9
         with:
-          message: "update last.json"
-          push: true
-
-      - name: Create or update Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
           branch: bot/update-last
-          base: main
-          title: "Auto update last.json"
-          body: "Automated update by GitHub Actions"
-          commit-message: "update last.json"
-          labels: automated
+          message: "chore: update last.json"
+          add: "last.json"
+          push: true
