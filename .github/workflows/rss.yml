@@ -14,25 +14,37 @@ jobs:
     if: github.repository_owner == 'Noir520'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout bot state branch
+        uses: actions/checkout@v4
+        with:
+          ref: bot/update-last
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Run
+      - name: Run bot
         env:
           RSS_URL: ${{ secrets.RSS_URL }}
           QYWX_WEBHOOK: ${{ secrets.QYWX_WEBHOOK }}
         run: node rss_to_qywx.js
 
-      - name: Save last
+      - name: Commit last.json
         uses: EndBug/add-and-commit@v9
         with:
-          add: "last.json"
-          message: "update last"
-          default_author: github_actions
+          message: "update last.json"
           push: true
+
+      - name: Create or update Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: bot/update-last
+          base: main
+          title: "Auto update last.json"
+          body: "Automated update by GitHub Actions"
+          commit-message: "update last.json"
+          labels: automated
