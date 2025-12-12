@@ -1,0 +1,14 @@
+{
+    "name": "jin10-rss-to-qywx",
+    "private": true,
+    "version": "1.0.0",
+    "description": "Fetch Jin10 RSS and push to WeCom bot via GitHub Actions",
+    "main": "rss_to_qywx.js",
+    "scripts": {
+        "start": "node rss_to_qywx.js"
+    },
+    "dependencies": {
+        "rss-parser": "^3.13.0",
+        "axios": "^1.6.0"
+    }
+}
