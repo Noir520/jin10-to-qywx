@@ -61,4 +61,4 @@ jobs:
           new_branch: bot/update-last
           message: "chore: update last.json"
           add: "last.json"
-          push: true
+          push: "--force"
