@@ -49,6 +49,6 @@ jobs:
           This PR syncs \`last.json\` from the \`bot/update-last\` branch to \`main\`.
 
           - This is a routine state sync, no code changes.
-          - Safe to merge or ignore." \
-              --label "automated" || echo "PR creation failed or already exists"
+          - Safe to merge or ignore." || echo "PR creation failed or already exists"
           fi
+
