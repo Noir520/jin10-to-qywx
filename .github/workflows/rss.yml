@@ -17,7 +17,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: bot/update-last
           fetch-depth: 0
+
+      # 确保 bot 分支存在并包含最新代码
+      # Ensure bot branch exists and has latest code
+      - name: Prepare bot branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 如果 bot 分支不存在，从 main 创建
+          # If bot branch doesn't exist, create from main
+          if ! git rev-parse --verify origin/bot/update-last >/dev/null 2>&1; then
+            git checkout -b bot/update-last origin/main
+            git push -u origin bot/update-last
+          fi
+          
+          # 从 main 合并最新代码（仅代码文件，保留 last.json）
+          # Merge latest code from main (keep last.json)
+          git fetch origin main
+          git checkout origin/main -- rss_to_qywx.js package.json package-lock.json README.md .github/workflows/rss.yml 2>/dev/null || true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -27,22 +47,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 🔑 关键：准备 bot 分支并绑定 upstream
-      - name: Prepare bot branch
-        run: |
-          git fetch origin
-          git checkout bot/update-last || git checkout -b bot/update-last
-          git push --set-upstream origin bot/update-last || true
-
       - name: Run RSS script
         env:
           RSS_URL: ${{ secrets.RSS_URL }}
           QYWX_WEBHOOK: ${{ secrets.QYWX_WEBHOOK }}
         run: node rss_to_qywx.js
 
-      - name: Commit last.json
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: "chore: update last.json"
-          add: "last.json"
-          push: "--force"
+      - name: Commit and push last.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add last.json
+          git diff --staged --quiet || git commit -m "chore: update last.json [skip ci]"
+          git push origin bot/update-last

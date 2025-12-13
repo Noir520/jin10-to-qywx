@@ -1,0 +1,47 @@
+name: Daily Sync to Main
+
+on:
+  schedule:
+    # 每天 UTC 16:00 (北京时间 00:00) 运行一次
+    # Run daily at UTC 16:00 (00:00 Beijing Time)
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout bot branch
+        uses: actions/checkout@v4
+        with:
+          ref: bot/update-last
+          fetch-depth: 0
+
+      - name: Check if last.json differs from main
+        id: diff
+        run: |
+          git fetch origin main
+          if git diff origin/main -- last.json | grep -q .; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.diff.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: bot/update-last
+          base: main
+          title: "chore: sync last.json from bot branch"
+          body: |
+            🤖 **Automated PR**
+            
+            This PR syncs `last.json` from the `bot/update-last` branch to `main`.
+            
+            - This is a routine state sync, no code changes.
+            - Safe to merge or ignore.
+          labels: automated
+          delete-branch: false
