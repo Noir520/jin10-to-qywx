@@ -26,22 +26,29 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to sync"
           fi
 
-      - name: Create Pull Request
+      - name: Create Pull Request via GitHub CLI
         if: steps.diff.outputs.has_changes == 'true'
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: bot/update-last
-          base: main
-          title: "chore: sync last.json from bot branch"
-          body: |
-            🤖 **Automated PR**
-            
-            This PR syncs `last.json` from the `bot/update-last` branch to `main`.
-            
-            - This is a routine state sync, no code changes.
-            - Safe to merge or ignore.
-          labels: automated
-          delete-branch: false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 检查是否已有 PR
+          existing_pr=$(gh pr list --base main --head bot/update-last --json number --jq '.[0].number' 2>/dev/null || echo "")
+          
+          if [ -n "$existing_pr" ]; then
+            echo "PR #$existing_pr already exists, skipping creation"
+          else
+            gh pr create \
+              --base main \
+              --head bot/update-last \
+              --title "chore: sync last.json from bot branch" \
+              --body "🤖 **Automated PR**
+
+          This PR syncs \`last.json\` from the \`bot/update-last\` branch to \`main\`.
+
+          - This is a routine state sync, no code changes.
+          - Safe to merge or ignore." \
+              --label "automated" || echo "PR creation failed or already exists"
+          fi
