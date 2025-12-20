@@ -1,7 +1,7 @@
 {
   "version": 3,
   "feeds": {
-    "2f98ca7813482b7468687c02aaf952ce": "3a6cb17e660151fec090079a24997789",
+    "2f98ca7813482b7468687c02aaf952ce": "adf5cda4bd90546a8b9afc6117d1792d",
     "964c8149a13f44b08cd97402fb21476b": "6723284312e5e9ab9ecb06f03d7ce0ac",
     "5a0168cedcbe109ba5b75e083f2ea4e2": "c5a2b2a03531e9ef58e325d9a228671d",
     "1872649ea13715fd672b6d80fec1954d": "be61a38ed3bb1132b4db069755a9f924"
@@ -1053,10 +1053,11 @@
     "6e5692d42a5f3afefa94d58ec7b36376",
     "fd24a6dbb9da13c84165b517f8bb42d4",
     "1fbe4d811a10080015becc0e172b6a3b",
-    "d7a2cb11f7e8368e0ec8704df2bda64f"
+    "d7a2cb11f7e8368e0ec8704df2bda64f",
+    "bfe2086f4467928c69fc8c44a19d8fc8"
   ],
-  "count": 1047,
-  "updatedAt": "2025-12-20T15:41:35.236Z",
+  "count": 1048,
+  "updatedAt": "2025-12-20T15:56:49.547Z",
   "contentHashes": [
     "c21793823727c53a96e6842fe986d3e5",
     "107afb7caafd113e05bcf083579d3651",
@@ -1891,6 +1892,7 @@
     "e92555beb7445bc2c0e122e0dadcf25f",
     "e275451bddc16f7ceae36f3248a3c5c1",
     "63ac221f3ef99085e70a380caadae243",
-    "3db0a936bfa842698bb6db89c2da28df"
+    "3db0a936bfa842698bb6db89c2da28df",
+    "645357393c7022fa7c8da420ece7ee87"
   ]
 }
