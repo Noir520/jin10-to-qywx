@@ -1,7 +1,7 @@
 {
   "version": 3,
   "feeds": {
-    "2f98ca7813482b7468687c02aaf952ce": "6edab1bff71891748fcc1624752f78a4",
+    "2f98ca7813482b7468687c02aaf952ce": "2df916fd957a6a1bd9b8214f3e424bf3",
     "964c8149a13f44b08cd97402fb21476b": "a409886cbfa8b9af5bbdc14965061c96",
     "5a0168cedcbe109ba5b75e083f2ea4e2": "c5a2b2a03531e9ef58e325d9a228671d",
     "1872649ea13715fd672b6d80fec1954d": "672714ea44f34c2ba149c11f31adad07"
@@ -1092,10 +1092,11 @@
     "ab0b38124f1af679ff298a598e2f07fd",
     "a252a38624c2e5e2ed78f83b9b102ee3",
     "e3d82192e316edee43ea4a76a53bfb85",
-    "89436ad0e0c0dbddb8462874bd6a5c3a"
+    "89436ad0e0c0dbddb8462874bd6a5c3a",
+    "ab2cfe45bf591bef9f55636935995d57"
   ],
-  "count": 1086,
-  "updatedAt": "2025-12-22T05:43:25.663Z",
+  "count": 1087,
+  "updatedAt": "2025-12-22T05:57:11.957Z",
   "contentHashes": [
     "c21793823727c53a96e6842fe986d3e5",
     "107afb7caafd113e05bcf083579d3651",
@@ -1969,6 +1970,7 @@
     "b6869ec6638b194819588d8f58fea710",
     "46e3c11cf8b7206e05437778bf2cde14",
     "bcab8d3e3afa2272be4974b71d502f95",
-    "9fe2b6ceaa5f9a066a857441aeb7c2e9"
+    "9fe2b6ceaa5f9a066a857441aeb7c2e9",
+    "bb7ece5f6239eb2ffa66b24dc3370efa"
   ]
 }
