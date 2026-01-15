@@ -1,7 +1,7 @@
 {
   "version": 3,
   "feeds": {
-    "2f98ca7813482b7468687c02aaf952ce": "eb10c1e6b6da9d9ccce6261148ee9fcb",
+    "2f98ca7813482b7468687c02aaf952ce": "79cd5f52cfe9bf87afc9acda8a42b3b5",
     "964c8149a13f44b08cd97402fb21476b": "f605ca9f4528699da66082948e988f03",
     "5a0168cedcbe109ba5b75e083f2ea4e2": "5f1f677bee22c59d7af7c9da99fd4edf",
     "1872649ea13715fd672b6d80fec1954d": "5fccaae9d407ad5af7f0a1bbb758bfb4"
@@ -3052,10 +3052,11 @@
     "b939679b65646411004eceaa4c1bc2c6",
     "4533838838775eb2118dd4a8b38ce29c",
     "ab1d393f6012ba373d7baf349d2adbba",
-    "564daa1374db28ea1a10197de93e13c4"
+    "564daa1374db28ea1a10197de93e13c4",
+    "d9bcd8d20b034293a2611d8993c17d66"
   ],
-  "count": 3046,
-  "updatedAt": "2026-01-15T14:45:34.185Z",
+  "count": 3047,
+  "updatedAt": "2026-01-15T15:01:36.255Z",
   "contentHashes": [
     "c21793823727c53a96e6842fe986d3e5",
     "107afb7caafd113e05bcf083579d3651",
@@ -5889,6 +5890,7 @@
     "3e23c9d0422bda90ffc950242fb47320",
     "6cabccd0e301cc2eb65ce99b32ed3847",
     "7663b25a2295701bc48d5776f1f2dce0",
-    "e539f5cf5b6e0cf896ffce3911a2faf1"
+    "e539f5cf5b6e0cf896ffce3911a2faf1",
+    "1f408c262c917031f5cd175b0fd5b653"
   ]
 }
